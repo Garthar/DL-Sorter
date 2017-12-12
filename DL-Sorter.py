@@ -3,4 +3,8 @@ import argparse
 import re
 import pathlib
 
-def
+def pirateHelper(eitthvad):
+    return 'penis'
+
+
+print(pirateHelper('asdf'))
