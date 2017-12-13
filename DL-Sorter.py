@@ -1,10 +1,25 @@
 import shutil
 import argparse
 import re
-import pathlib
+from pathlib import Path
+import glob
 
-def pirateHelper():
-    return 'penis'
+parser = argparse.ArgumentParser()
+parser.add_argument("src", help="Source directory")
+parser.add_argument("dst", help="Destination directory")
+args = parser.parse_args()
 
 
-print(pirateHelper())
+
+def pirateHelper(byrjun, endir):
+    src = Path(byrjun).glob('**/*') #fer recursively í gegnum allar möppur í undir current path
+    nyttSett = set()
+
+    for show in src:
+        if not show.is_dir():
+            #print(show.suffix)
+            nyttSett.add(show.suffix)   #addar unique endingum inn í settið nyttSett
+    print(nyttSett)
+
+
+pirateHelper(args.src, args.dst)
