@@ -28,6 +28,9 @@ def pirateHelper(byrjun, endir):
                 #print(info)
                 if True == True: #Checkum hvort season nr. sé ekki -1 því ef það er -1 þá er það ekki þáttur
                     moveFile(show, info) #færum fælinn
+                print(info)
+                if True == True: #Checkum hvort season nr. sé ekki -1 því ef það er -1 þá er það ekki þáttur
+                    #moveFile(show, info) færum fælinn
                     b = 1 #Bara svo forritið keyri án þess að hafa klára if statementið
 
 
