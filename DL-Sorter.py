@@ -40,6 +40,11 @@ def pirateHelper(byrjun, endir):
                         dest_path.mkdir(parents=True)
                     copy(show, dest_path)
 
+#TODO
+#Regex for shows 1x02 f.e.
+#Fix some folder names
+#Fix bad path-names
+#Sum more shit
 
 def getInfo(show):
     return 0
