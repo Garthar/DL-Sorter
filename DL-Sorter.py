@@ -18,24 +18,27 @@ def pirateHelper(byrjun, endir):
         if not show.is_dir():
             if show.suffix in allowedSuffixes and not 'sample' in str(show).lower():
                 name_match1 = re.search(r'.*[\/\\](.*)[sS](\d{1,2})', str(show))
-                name_match2 = re.search(r'.*[\/\\](.*)[\.](\d)\d{2}[\.]', str(show))
+                name_match2 = re.search(r'.*[\/\\](.*)[\. ]([0]*\d)\d{2}[\. ]', str(show))
+                name_match3 = re.search(r'.*[\/\\](.*)[^\d](\d{1,2})[\.xX]\d{1,2}[^\d]', str(show))
+                name_match4 = re.search(r'.*[\/\\](?P<show_name>)(\d)\d{2}', str(show)) #(?P<show_name>) optional
+                name_match5 = re.search(r'.*[\/\\](.*)[sS]eason (?P<season>\d{1,2})', str(show)) #(?P<season>) optional
 
                 if name_match1:
                     regExMatches(show, name_match1, endir, files)
                 elif name_match2:
                     regExMatches(show, name_match2, endir, files)
-
+                elif name_match3:
+                    regExMatches(show, name_match3, endir, files)
+                elif name_match4:
+                    regExMatches(show, name_match4, endir, files)
+                elif name_match5:
+                    regExMatches(show, name_match5, endir, files)
+                else:
+                    print(str(show))
 
     copyFiles(files)
 
 
-
-
-#TODO
-#Regex for shows 1x02 f.e.
-#Fix some folder names
-#Fix bad path-names
-#Sum more shit
 
 def showNameExtractonator(show, name_match):
     show_name = re.sub(r'\'', '', name_match.group(1))
@@ -73,6 +76,5 @@ def regExMatches(show, name_match, endir, files):
 
         dest_path = Path(endir, show_name, season_number)
         files.append([show, dest_path])
-
 
 pirateHelper(args.src, args.dst)
