@@ -12,7 +12,7 @@ args = parser.parse_args()
 allowedSuffixes = {'.avi', '.flv', '.wmv', '.mov', '.divx', '.mp4', '.mta',  '.mpg', '.m4v', '.smi', '.mkv', '.AVI'}
 
 def pirateHelper(byrjun, endir):
-    files =  []
+    files = []
     src = Path(byrjun).glob('**/*') #fer recursively í gegnum allar möppur í undir current path
     for show in src:
         if not show.is_dir():
@@ -33,8 +33,8 @@ def pirateHelper(byrjun, endir):
                     regExMatches(show, name_match4, endir, files)
                 elif name_match5:
                     regExMatches(show, name_match5, endir, files)
-                else:
-                    print(str(show))
+                #else:
+                    #print(str(show))
 
     copyFiles(files)
 
@@ -43,16 +43,12 @@ def pirateHelper(byrjun, endir):
 def showNameExtractonator(show, name_match):
     show_name = re.sub(r'\'', '', name_match.group(1))
     show_name = re.sub(r'[\. _-]+', ' ', show_name)
-    #show_name = ' '.join(re.findall('[A-Z][^A-Z]*', str(show_name)))
-    #print(show_name)
     show_name = show_name.strip().title()
 
     if not show_name:
         directories = re.split(r'[\/\\]', str(show))[:-1]
-        # print(directories[::-1])
         for d in directories[::-1]:
             folder_name = re.sub(r'[sS]\d{1,2}|[sS]eason[\.-_ ]*\d{1,2}', '', d)
-            # print(folder_name)
             if folder_name:
                 show_name = folder_name
                 show_name = re.sub(r'\'', '', show_name)
