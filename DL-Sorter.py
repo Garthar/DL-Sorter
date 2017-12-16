@@ -17,15 +17,14 @@ def pirateHelper(byrjun, endir):
     for show in src:
         if not show.is_dir():
             if show.suffix in allowedSuffixes and not 'sample' in str(show).lower():
-                #name_match = re.findall('[A-Z][^A-Z]*', str(show))
-                name_match = re.search(r'.*[\/\\](.*)[sS](\d{1,2})', str(show))
-                if name_match:
-                    show_name = showNameExtractonator(show, name_match)
+                name_match1 = re.search(r'.*[\/\\](.*)[sS](\d{1,2})', str(show))
+                name_match2 = re.search(r'.*[\/\\](.*)[\.](\d)\d{2}[\.]', str(show))
 
-                    season_number = 'Season ' + name_match.group(2).zfill(2)
+                if name_match1:
+                    regExMatches(show, name_match1, endir, files)
+                elif name_match2:
+                    regExMatches(show, name_match2, endir, files)
 
-                    dest_path = Path(endir, show_name, season_number)
-                    files.append([show, dest_path])
 
     copyFiles(files)
 
@@ -40,7 +39,11 @@ def pirateHelper(byrjun, endir):
 
 def showNameExtractonator(show, name_match):
     show_name = re.sub(r'\'', '', name_match.group(1))
-    show_name = re.sub(r'[\. _-]+', ' ', show_name).strip().title()
+    show_name = re.sub(r'[\. _-]+', ' ', show_name)
+    #show_name = ' '.join(re.findall('[A-Z][^A-Z]*', str(show_name)))
+    #print(show_name)
+    show_name = show_name.strip().title()
+
     if not show_name:
         directories = re.split(r'[\/\\]', str(show))[:-1]
         # print(directories[::-1])
@@ -52,17 +55,24 @@ def showNameExtractonator(show, name_match):
                 show_name = re.sub(r'\'', '', show_name)
                 show_name = re.sub(r'[\. _-]+', ' ', show_name).strip().title()
                 break
-
     return show_name
 
 def copyFiles(files):
     for f in files:
         show = f[0]
         dest_path = f[1]
-        
+
         if not dest_path.exists():
             dest_path.mkdir(parents=True)
         copy(show, dest_path)
+
+def regExMatches(show, name_match, endir, files):
+        show_name = showNameExtractonator(show, name_match)
+
+        season_number = 'Season ' + name_match.group(2).zfill(2)
+
+        dest_path = Path(endir, show_name, season_number)
+        files.append([show, dest_path])
 
 
 pirateHelper(args.src, args.dst)
